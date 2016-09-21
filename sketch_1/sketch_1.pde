@@ -10,14 +10,16 @@ float odor_substantivity=152.90637363;
 float refractive_index=1.468392;
 float specific_gravity=0.941115;
 String[] scent_components = new String[0]; // {"http://www.thegoodscentscompany.com/data/rw1019161.html","http://www.thegoodscentscompany.com/data/es1027531.html"};
-//ArrayList<Class<Body>> bodies = new ArrayList<Class<Body>>();
-Body[] bodies = new Body[10];
+ArrayList<Body> bodieslist = new ArrayList<Body>();
+Body[] bodies = {}; // new Body[0];
+Mixer mixer = new Mixer();
 
 void setup() {
   size(500, 500);
   background(255);
   smooth();
   frameRate(10);
+  
   scent_components = append(scent_components, "http://www.thegoodscentscompany.com/data/rw1096561.html") ;
   scent_components = append(scent_components, "http://www.thegoodscentscompany.com/data/co1666531.html");
   scent_components = append(scent_components, "http://www.thegoodscentscompany.com/data/es1584811.html");
@@ -68,34 +70,31 @@ void setup() {
        //b.bodycolor = color(240,210,240);
        
        b.setup();
-       bodies[i]=b;
+       //bodies[i]=b;
+       bodieslist.add(b);
+       
        //print(b.odor_strength);
 
        i++;
       }
-
+  //println(bodies.length); 
   //arr[0] = b1;
   //arr[1] = b2;
   //bodies = arr;
   //print(arr.length());
   //Body bb = b;
-  
+  bodies = bodieslist.toArray(new Body[bodieslist.size()]);
 }
 
 void draw() {
    background(255);
    fill(200);
    pushMatrix();
-     text(bodies[2].odor_name,25,50);
+     //text(bodies[2].odor_name,25,50);
    popMatrix();
-   pushMatrix();
-    translate(250,250);
-    bodies[2].renderBody();
-    //print(bodies[1].r_incr_step,50,50);
-   popMatrix();
-   
-  // pushMatrix();
-  // popMatrix();
+   mixer.getComponentList();
+   mixer.getBodies();
+   //bodies[2].renderBody();
  }
 
  void mousePressed() {
@@ -115,6 +114,24 @@ void draw() {
    popMatrix();
  }
 
+class Mixer {
+  void getComponentList(){
+    int i=0;
+    for (Body b: bodies) {
+      i=i+10;
+      //print(" " + i + " ");
+      //print("Mixer say" + b.odor_name);
+      pushMatrix();
+        text(b.odor_name,25,i);
+      popMatrix();
+   }
+  }
+  void getBodies() {
+    for (Body b: bodies) {
+      b.renderBody();
+    }
+  }
+}
 
 class Body {
   String odor_name;  
@@ -164,6 +181,8 @@ int getStrenght(String word){
 }
 
 void renderBody() {
+  pushMatrix();
+    translate(250,250);
     //ellipse(10,10,200,200);
     for (int i = 0; i < 360*helix_quantity; i += iq) {
     x = r*cos(radians(i*n/m))*sin(radians(i));
@@ -186,5 +205,7 @@ void renderBody() {
     
   }
   d +=step;
+  popMatrix();
 }
+ 
 }
