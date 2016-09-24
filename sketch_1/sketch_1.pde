@@ -27,7 +27,7 @@ void setup() {
   //print(json_file_name);
   json = loadJSONObject(json_file_name);
   //print(json);
-    print(scent_components.length);
+  //  print(scent_components.length);
   int scent_components_count = scent_components.length;
   Object[] arr = new Object[scent_components_count];
      int i=0;
@@ -35,7 +35,7 @@ void setup() {
     //for (int i==0; i<=scent_components_count; i++) {
       JSONObject compData = json.getJSONObject(sc);
       Body b = new Body();
-      print(compData.getString("name") + "\n");
+      //print(compData.getString("name") + "\n");
       b.odor_name = compData.getString("name");
     
       try {
@@ -74,7 +74,9 @@ void setup() {
        bodieslist.add(b);
        
        //print(b.odor_strength);
-
+       println(b.odor_name);
+       println(b.odor_type);
+       println(b.odor_description);
        i++;
       }
   //println(bodies.length); 
