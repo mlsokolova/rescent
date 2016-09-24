@@ -1,6 +1,6 @@
 Body b1 = new Body();
 Body b2 = new Body();
-JSONObject json;
+JSONObject tgsc_json;
 String ds_path = "../TGSCDataset/";
 String ds_file_name = "fragonly-All.json";
 float boiling_point=221.693614;
@@ -13,6 +13,10 @@ String[] scent_components = new String[0]; // {"http://www.thegoodscentscompany.
 ArrayList<Body> bodieslist = new ArrayList<Body>();
 Body[] bodies = {}; // new Body[0];
 Mixer mixer = new Mixer();
+ColorAssociation sca = new ColorAssociation();
+String sca_ds_path = "../ScentColorAssociation/";
+String sca_file_name = "scent_color_association.json";
+JSONObject sca_json;
 
 void setup() {
   size(500, 500);
@@ -25,15 +29,19 @@ void setup() {
   scent_components = append(scent_components, "http://www.thegoodscentscompany.com/data/es1584811.html");
   String json_file_name = ds_path + ds_file_name;
   //print(json_file_name);
-  json = loadJSONObject(json_file_name);
+  
+  sca_json = loadJSONObject(sca_ds_path + sca_file_name);
+    
+  tgsc_json = loadJSONObject(json_file_name);
   //print(json);
   //  print(scent_components.length);
   int scent_components_count = scent_components.length;
   Object[] arr = new Object[scent_components_count];
      int i=0;
    for (String sc: scent_components) {
+     
     //for (int i==0; i<=scent_components_count; i++) {
-      JSONObject compData = json.getJSONObject(sc);
+      JSONObject compData = tgsc_json.getJSONObject(sc);
       Body b = new Body();
       //print(compData.getString("name") + "\n");
       b.odor_name = compData.getString("name");
@@ -156,7 +164,8 @@ class Body {
   float iq;
   float helix_quantity;
   String txt;
-  color bodycolor;
+  color bodycolor = color(25,25,25);
+  //color bodycolor;
   
  void setup(){
    txt = odor_name;
@@ -210,4 +219,14 @@ void renderBody() {
   popMatrix();
 }
  
+}
+
+class ColorAssociation {
+  color getColor(String odor_type){
+    //print(json1);
+    JSONObject sca = sca_json.getJSONObject("vinegar");
+    println(sca);
+    color bc = color(240,210,240);
+    return bc;
+  }
 }
