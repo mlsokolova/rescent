@@ -13,7 +13,7 @@ String[] scent_components = new String[0]; // {"http://www.thegoodscentscompany.
 ArrayList<Body> bodieslist = new ArrayList<Body>();
 Body[] bodies = {}; // new Body[0];
 Mixer mixer = new Mixer();
-ColorAssociation sca = new ColorAssociation();
+ScentColorAssociation sca = new ScentColorAssociation();
 String sca_ds_path = "../ScentColorAssociation/";
 String sca_file_name = "scent_color_association.json";
 JSONObject sca_json;
@@ -63,7 +63,8 @@ void setup() {
        } catch(Exception ex) {b.flash_point = odor_substantivity;}
     
        b.odor_type = compData.getString("odor_type");
-    
+       b.bodycolor = sca.getColor(b.odor_type);
+       
        b.odor_strength = compData.getString("odor_strength");
     
        //String[] descr1 = {"lavender","floral","herbal","woody"};
@@ -132,6 +133,7 @@ class Mixer {
       //print(" " + i + " ");
       //print("Mixer say" + b.odor_name);
       pushMatrix();
+        fill(0,0,0);
         text(b.odor_name,25,i);
       popMatrix();
    }
@@ -221,12 +223,20 @@ void renderBody() {
  
 }
 
-class ColorAssociation {
+class ScentColorAssociation {
   color getColor(String odor_type){
     //print(json1);
-    JSONObject sca = sca_json.getJSONObject("vinegar");
-    println(sca);
-    color bc = color(240,210,240);
+    int r = 0;
+    int g = 0;
+    int b = 0;
+    try {
+      JSONObject sca = sca_json.getJSONObject(odor_type);
+      println(sca);
+      r = sca.getInt("r");
+      g = sca.getInt("g");
+      b = sca.getInt("b");
+    } catch(Exception ex){}
+    color bc = color(r,g,b);
     return bc;
   }
 }
